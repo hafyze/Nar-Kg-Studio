@@ -1,6 +1,6 @@
 <script>
 	import '../app.css';
-	import { DarkMode, Navbar, NavBrand, NavHamburger, NavLi, NavUl } from "flowbite-svelte";
+	import { Button, DarkMode, Navbar, NavBrand, NavHamburger, NavLi, NavUl } from "flowbite-svelte";
 
 </script>
 
@@ -12,14 +12,16 @@
                 <!-- <img src="/images/flowbite-svelte-icon-logo.svg" class="me-3 h-6 sm:h-9" alt="Flowbite Logo" /> -->
                 <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Roomstay</span>
               </NavBrand>
-              <NavHamburger />
-              <NavUl>
+			  <div class="flex md:order-2">
+				<Button size="sm">Book Now</Button>
+				<NavHamburger /> 
+			  </div>              <NavUl>
                 <NavLi href="/" active={true}>Home</NavLi>
                 <NavLi href="/attraction">Attractions</NavLi>
                 <NavLi href="/about">About</NavLi>
                 <NavLi href="/pricing">Pricing</NavLi>
                 <NavLi href="/contact">Contact</NavLi>
-                <DarkMode />
+                <DarkMode btnClass="text-center"/>
               </NavUl>
         </Navbar>
     </div>
