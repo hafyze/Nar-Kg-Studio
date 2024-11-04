@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { User } from "$lib/models/user.models.js";
 	import { Card, Button, Input } from 'flowbite-svelte';
 
 	let loginInfo: any = {
