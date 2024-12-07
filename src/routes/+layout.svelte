@@ -10,7 +10,7 @@
         <Navbar class="px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 start-0 border-b">
             <NavBrand href="/">
                 <!-- <img src="/images/flowbite-svelte-icon-logo.svg" class="me-3 h-6 sm:h-9" alt="Flowbite Logo" /> -->
-                <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Roomstay</span>
+                <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">NR Studio</span>
               </NavBrand>
 			  <div class="flex md:order-2">
 				<Button size="sm">Book Now</Button>
