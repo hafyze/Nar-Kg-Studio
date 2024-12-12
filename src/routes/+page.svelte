@@ -23,7 +23,7 @@
     function toggleCardContent() {
       showCountryside = !showCountryside; // Toggle between countryside and urban
     }
-  </script>
+</script>
   
   <div class="max-w-4xl space-y-4 mx-auto">
     {#if !loading}
