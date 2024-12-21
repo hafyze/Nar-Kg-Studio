@@ -6,8 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
-- do pricing page
 - do online booking with payment
+
+## [0.0.3] - 2024-12-21
+### Added
+- Booking page completed
+- Phone number updated
 
 ## [0.0.2] - 2024-12-13
 ### Added

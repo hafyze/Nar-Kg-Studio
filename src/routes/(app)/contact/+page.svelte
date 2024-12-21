@@ -16,7 +16,7 @@
                 <!-- Phone -->
                 <div class="flex items-center">
                     <PhoneOutline class="mr-2 text-gray-500" />
-                    <span class="text-white-800">+60 13-433 6103</span>
+                    <span class="text-white-800">+60 111 138 4191</span>
                 </div>
                 <!-- Location -->
                 <div class="flex items-center">
@@ -29,7 +29,7 @@
             <div class="flex mt-4 space-x-3 rtl:space-x-reverse">
                 <Button
                     color="green"
-                    href="https://wa.me/60134336103?text=Hi%20Narkampung%20Studio!%20I%20would%20like%20to%20know%20more."
+                    href="https://wa.me/601111384191?text=Hi%20Narkampung%20Studio!%20I%20would%20like%20to%20know%20more."
                     target="_blank"
                     >
                     <WhatsappSolid /> Whatsapp us now
