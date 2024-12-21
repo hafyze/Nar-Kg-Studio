@@ -9,14 +9,13 @@
     <div class="relative px-8">
         <Navbar class="px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 start-0 border-b">
             <NavBrand href="/">
-                <!-- <img src="/images/flowbite-svelte-icon-logo.svg" class="me-3 h-6 sm:h-9" alt="Flowbite Logo" /> -->
-                <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">NR Studio</span>
+                <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">NAR Kampung Studio</span>
               </NavBrand>
 			  <div class="flex md:order-2">
-				<Button size="sm">Book Now</Button>
+				<Button size="sm" href="/booking">Book Now</Button>
 				<NavHamburger /> 
 			  </div>              <NavUl>
-                <NavLi href="/" active={true}>Home</NavLi>
+                <NavLi href="/">Home</NavLi>
                 <NavLi href="/attraction">Attractions</NavLi>
                 <NavLi href="/about">About</NavLi>
                 <NavLi href="/pricing">Pricing</NavLi>
