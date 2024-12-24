@@ -1,32 +1,52 @@
 <script lang="ts">
 	import { Input, Textarea, Button } from 'flowbite-svelte';
-	import { Datepicker } from 'flowbite-svelte';
+	import { DateInput } from 'date-picker-svelte';
+	import type { Booking } from '$lib/models/booking.models.js';
 
-	let name = '';
-	let email = '';
-	let phone = '';
-	let checkIn: any = null;
-	let checkOut: any = null;
-	let remarks = '';
-	let pricePerNight = 120; // Room price in RM
-	let totalPrice = 0;
+	let booking: Booking = {
+		id: '',
+		name: '',
+		email: '',
+		phone: '',
+		checkIn: new Date(),
+		checkOut: new Date(),
+		remarks: '',
+		pricePerNight: 120,
+		totalPrice: 0
+	};
 
+	function formatDate(date: Date): string {
+		const day = String(date.getDate()).padStart(2, '0');
+		const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+		const year = date.getFullYear();
+		return `${day}-${month}-${year}`;
+	}
+
+	// Function to calculate total price
 	function calculatePrice() {
-		if (checkIn && checkOut) {
-			// Ensure that checkIn and checkOut are valid dates
-			const checkInDate = new Date(checkIn).getTime();
-			const checkOutDate = new Date(checkOut).getTime();
+		if (booking.checkIn && booking.checkOut) {
+			const checkInDate = booking.checkIn.getTime(); // Directly use Date object
+			const checkOutDate = booking.checkOut.getTime(); // Directly use Date object
 
-			// Calculate the number of nights
 			const diffTime = Math.max(checkOutDate - checkInDate, 0);
 			const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
-			totalPrice = nights * pricePerNight;
+			booking.totalPrice = nights * booking.pricePerNight;
 		} else {
-			totalPrice = 0; // Reset total price if dates are invalid
+			booking.totalPrice = 0;
 		}
 	}
 
-	$: calculatePrice(); // Automatically recalculate when checkIn or checkOut changes
+
+	$: booking.checkIn, booking.checkOut, calculatePrice(), console.log("booking: ", booking);
+
+	async function onSubmit() {
+		const formattedBooking = {
+			...booking,
+			checkIn: formatDate(booking.checkIn),
+			checkOut: formatDate(booking.checkOut),
+		};
+		console.log("booking", formattedBooking);
+	}
 </script>
 
 <div
@@ -46,7 +66,7 @@
 			</div>
 		</div>
 		<p class="mt-4 text-lg font-medium text-gray-800 dark:text-gray-100">
-			Price: <span class="rounded-full bg-white p-2 text-black">RM {pricePerNight} per night</span>
+			Price: <span class="rounded-full bg-white p-2 text-black">RM {booking.pricePerNight} per night</span>
 		</p>
 	</section>
 
@@ -56,13 +76,19 @@
 
 		<!-- Name Input -->
 		<div class="mb-4">
-			<Input bind:value={name} placeholder="Enter your full name" required class="w-full" />
+			<label for="name" class=" text-sm font-medium text-gray-700 dark:text-gray-300">
+				Full Name
+			</label>
+			<Input bind:value={booking.name} placeholder="Enter your full name" required class="w-full" />
 		</div>
 
 		<!-- Email Input -->
 		<div class="mb-4">
+			<label for="email" class=" text-sm font-medium text-gray-700 dark:text-gray-300">
+				E-mail
+			</label>
 			<Input
-				bind:value={email}
+				bind:value={booking.email}
 				type="email"
 				placeholder="Enter your email"
 				required
@@ -72,8 +98,11 @@
 
 		<!-- Phone Input -->
 		<div class="mb-4">
+			<label for="phone" class=" text-sm font-medium text-gray-700 dark:text-gray-300">
+				Phone Number
+			</label>
 			<Input
-				bind:value={phone}
+				bind:value={booking.phone}
 				type="tel"
 				placeholder="Enter your phone number"
 				required
@@ -86,16 +115,12 @@
 			<label for="checkIn" class=" text-sm font-medium text-gray-700 dark:text-gray-300">
 				Check-In Date
 			</label>
-            <Datepicker 
-                id="checkIn" 
-                bind:value={checkIn} 
-                required 
-                datepickerTitle="" 
-                datepickerFormat="dd-MM-yyyy"
-                datepickerOrientation="top"
-                datepickerButtons
-                inputClass="pl-[2.5rem] text-center text-gray-700 dark:text-gray-300 dark:bg-gray-700 w-full rounded-lg"
-            />
+			<DateInput
+				bind:value={booking.checkIn}
+				format="dd-MM-yyyy"
+				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+				on:input={calculatePrice}
+			/>
 		</div>
 
 		<!-- Check-Out Date -->
@@ -103,22 +128,18 @@
 			<label for="checkOut" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
 				Check-Out Date
 			</label>
-			<Datepicker 
-                id="checkOut" 
-                bind:value={checkOut} 
-                required 
-                datepickerTitle="" 
-                datepickerFormat="dd-MM-yyyy"
-                datepickerOrientation="top"
-                datepickerButtons
-                inputClass="pl-[2.5rem] text-center text-gray-700 dark:text-gray-300 dark:bg-gray-700 w-full rounded-lg"
-            />
+			<DateInput
+				bind:value={booking.checkOut}
+				format="dd-MM-yyyy"
+				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+				on:input={calculatePrice} 
+			/>
 		</div>
 
 		<!-- Remarks -->
 		<div class="mb-4">
 			<Textarea
-				bind:value={remarks}
+				bind:value={booking.remarks}
 				placeholder="Enter additional requests or remarks"
 				class="w-full"
 			/>
@@ -127,12 +148,12 @@
 		<!-- Total Price -->
 		<div class="mb-6">
 			<p class="text-lg font-medium text-gray-800 dark:text-gray-100">
-				Total Price: <span class="text-green-600">RM {totalPrice}</span>
+				Total Price: <span class="rounded-xl bg-white p-2 text-black">RM {booking.totalPrice}</span>
 			</p>
 		</div>
 
 		<!-- Submit Button -->
-		<Button class="w-full">Submit Booking</Button>
+		<Button class="w-full" on:click={onSubmit}>Submit Booking</Button>
 	</section>
 </div>
 
