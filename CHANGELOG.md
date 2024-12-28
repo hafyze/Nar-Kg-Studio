@@ -6,12 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+- article for attraction 
 - do online booking with payment
 
 ## [0.0.4] - 2024-12-21
 ### Added
 - Added rate per night in home page
 - Added notice booking is under progress
+- Added feedback form
 
 ## [0.0.3] - 2024-12-21
 ### Added

@@ -1,6 +1,7 @@
 <script>
 	import '../app.css';
 	import { Button, DarkMode, Navbar, NavBrand, NavHamburger, NavLi, NavUl } from "flowbite-svelte";
+  import FeedbackForm from '$lib/components/FeedbackForm.svelte';
 
 </script>
 
@@ -27,5 +28,6 @@
 
     <div class="pt-36">
         <slot></slot>
+        <FeedbackForm />
     </div>
 </div>
