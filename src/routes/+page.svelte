@@ -24,7 +24,10 @@
       showCountryside = !showCountryside; // Toggle between countryside and urban
     }
 </script>
-  
+  <div class="bg-blue-500 text-white text-center py-2 rounded-md mb-4">
+    <p class="text-lg ">Starting from just <span class="text-2xl font-bold">RM120</span> per night!</p>
+  </div>
+
   <div class="max-w-4xl space-y-4 mx-auto">
     {#if !loading}
       <Carousel 

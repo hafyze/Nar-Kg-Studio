@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 - do online booking with payment
 
+## [0.0.4] - 2024-12-21
+### Added
+- Added rate per night in home page
+- Added notice booking is under progress
+
 ## [0.0.3] - 2024-12-21
 ### Added
 - Booking page completed
