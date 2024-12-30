@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - article for attraction 
 - do online booking with payment
 
+## [0.0.5] - 2024-12-31
+### Fix
+- Fix map overflowing out of the card 
+
 ## [0.0.4] - 2024-12-21
 ### Added
 - Added rate per night in home page

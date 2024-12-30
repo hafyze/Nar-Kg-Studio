@@ -35,12 +35,13 @@
   </script>
   
   <footer class="text-white py-8">
-    <div class="container mx-auto text-center max-w-lg">
+    <div class="container mx-auto text-center max-w-lg p-2">
       <h3 class="text-lg font-bold mb-4 text-white">We Value Your Feedback</h3>
+      <p>Please write a feedback you have regarding your stay, and website experience 😊</p>
       <form on:submit={sendFeedback} class="space-y-6">
         <!-- Name Input Field -->
         <div class="mb-4">
-          <Label for="name" class="block text-sm font-medium text-white mb-2">Your Name</Label>
+          <Label for="name" class="block text-sm font-medium text-white mt-2 mb-2">Your Name</Label>
           <div class="flex items-center">
             <ButtonGroup class="w-full">
                 <InputAddon>

@@ -1,10 +1,10 @@
 <script>
     import { Card, Avatar, Button } from 'flowbite-svelte';
     import { EnvelopeOutline, PhoneOutline, MapPinAltOutline, WhatsappSolid } from 'flowbite-svelte-icons';
-  </script>
-  
+</script>
+
 <div class="">
-    <Card padding="md" class="mx-auto">
+    <Card padding="md" class="mx-auto w-3/4">
         <div class="flex flex-col items-center pb-4">
             <h5 class="mb-2 text-xl font-medium text-white-800">Contact Us</h5>
             <div class="flex flex-col space-y-4">
@@ -21,7 +21,8 @@
                 <!-- Location -->
                 <div class="flex items-center">
                     <MapPinAltOutline class="mr-2 text-gray-500" />
-                    <span class="text-white-800">Kampung Teluk Kumbar, 11950 Bayan Lepas, Penang
+                    <span class="text-white-800">
+                        Kampung Teluk Kumbar, 11950 Bayan Lepas, Penang
                         <a class="text-xs italic text-blue-500" href="https://maps.app.goo.gl/6tL6cUkkCrn5Nvvg8" target="_blank">direction</a>
                     </span>
                 </div>
@@ -31,7 +32,7 @@
                     color="green"
                     href="https://wa.me/601111384191?text=Hi%20Narkampung%20Studio!%20I%20would%20like%20to%20know%20more."
                     target="_blank"
-                    >
+                >
                     <WhatsappSolid /> Whatsapp us now
                 </Button>
             </div>
@@ -46,8 +47,7 @@
             <iframe 
                 title="Map Location" 
                 src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d290.7033703332225!2d100.23931180522374!3d5.287746002498194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2smy!4v1734020234426!5m2!1sen!2smy" 
-                width="350" 
-                height="300" 
+                class="w-full h-[300px]"
                 style="border:0;" 
                 allowfullscreen 
                 loading="lazy" 
