@@ -25,7 +25,7 @@
         </Navbar>
     </div>
 
-    <div class="pt-36">
+    <div class="pt-32">
         <slot></slot>
         <FeedbackForm />
     </div>

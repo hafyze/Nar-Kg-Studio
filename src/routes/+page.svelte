@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { Carousel, Thumbnails, Card } from "flowbite-svelte";
+    import { Carousel, Thumbnails, Card, Spinner } from "flowbite-svelte";
     import { MapPinOutline } from 'flowbite-svelte-icons';
 
     let images: any = [];
@@ -40,7 +40,7 @@
       <Thumbnails {images} {forward} bind:index 
         imgClass="object-contain w-[80px] h-auto sm:w-[100px] md:w-[120px] lg:w-[150px]" />
     {:else}
-      <p>Loading...</p>
+      <p><Spinner /> Loading...</p>
     {/if}
   </div>
   
