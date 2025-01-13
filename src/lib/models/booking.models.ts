@@ -6,6 +6,5 @@ export interface Booking {
     checkIn: Date
     checkOut: Date
     remarks: string
-    pricePerNight: number
     totalPrice: number
 }

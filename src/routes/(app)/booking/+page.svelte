@@ -2,6 +2,7 @@
 	import { Input, Textarea, Button } from 'flowbite-svelte';
 	import { DateInput } from 'date-picker-svelte';
 	import type { Booking } from '$lib/models/booking.models.js';
+	const pricePerNight = 120;
 
 	let booking: Booking = {
 		id: '',
@@ -11,7 +12,6 @@
 		checkIn: new Date(),
 		checkOut: new Date(),
 		remarks: '',
-		pricePerNight: 120,
 		totalPrice: 0
 	};
 
@@ -30,7 +30,7 @@
 
 			const diffTime = Math.max(checkOutDate - checkInDate, 0);
 			const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
-			booking.totalPrice = nights * booking.pricePerNight;
+			booking.totalPrice = nights * pricePerNight;
 		} else {
 			booking.totalPrice = 0;
 		}
@@ -40,12 +40,40 @@
 
 	async function onSubmit() {
 		const formattedBooking = {
-			...booking,
+			name: booking.name,
+			email: booking.email,
+			phone: booking.phone,
 			checkIn: formatDate(booking.checkIn),
-			checkOut: formatDate(booking.checkOut)
+			checkOut: formatDate(booking.checkOut),
+			remarks: booking.remarks,
+			totalPrice: booking.totalPrice
 		};
-		console.log('booking', formattedBooking);
+
+		try {
+			const response = await fetch('/api/submitBooking', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(formattedBooking),
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				console.error('Error:', errorData.error);
+				alert('Failed to submit booking. Please try again.');
+				return;
+			}
+
+			const result = await response.json();
+			console.log('Success:', result);
+			alert('Booking submitted successfully!');
+		} catch (error) {
+			console.error('Unexpected error:', error);
+			alert('An unexpected error occurred. Please try again.');
+		}
 	}
+
 </script>
 
 <!-- Development Notice -->
@@ -77,20 +105,20 @@
 >
 	<!-- Room Information Section -->
 	<section class="mb-8">
-		<h1 class="mb-4 text-3xl font-semibold text-gray-800 dark:text-gray-100">Deluxe Room</h1>
+		<h1 class="mb-4 text-3xl font-semibold text-gray-800 dark:text-gray-100">Studio Room</h1>
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 			<img src="/images/bed.jpg" alt="Room" class="h-64 w-full rounded-lg object-cover" />
 			<div>
 				<ul class="list-disc pl-5 text-gray-700 dark:text-gray-300">
 					<li class="mb-2">Air-conditioned room with queen-sized bed</li>
 					<li class="mb-2">Private bathroom with hot shower</li>
-					<li class="mb-2">Complimentary bottled water and coffee</li>
+					<li class="mb-2">Complimentary bottled water</li>
 				</ul>
 			</div>
 		</div>
 		<p class="mt-4 text-lg font-medium text-gray-800 dark:text-gray-100">
 			Price: <span class="rounded-full bg-white p-2 text-black"
-				>RM {booking.pricePerNight} per night</span
+				>RM {pricePerNight} per night</span
 			>
 		</p>
 	</section>

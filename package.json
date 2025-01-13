@@ -60,6 +60,8 @@
 	"type": "module",
 	"dependencies": {
 		"@emailjs/browser": "^4.4.1",
+		"@supabase/supabase-js": "^2.47.12",
+		"@vercel/node": "^5.0.2",
 		"axios": "^1.7.7",
 		"date-picker-svelte": "^2.15.1"
 	}
