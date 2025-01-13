@@ -36,7 +36,7 @@
 		}
 	}
 
-	$: booking.checkIn, booking.checkOut, calculatePrice(), console.log('booking: ', booking);
+	$: booking.checkIn, booking.checkOut, calculatePrice();
 
 	async function onSubmit() {
 		const formattedBooking = {
