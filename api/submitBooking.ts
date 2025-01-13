@@ -9,21 +9,20 @@ const supabase = createClient(
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method === 'POST') {
-        // Convert checkIn and checkOut from string 'dd-MM-yyyy' to Date objects
         const checkInDate = req.body.checkIn.split('-').reverse().join('-'); // Convert to 'yyyy-MM-dd'
         const checkOutDate = req.body.checkOut.split('-').reverse().join('-'); // Convert to 'yyyy-MM-dd'
 
-        // Prepare the booking data without including id and created_at
+        // Prepare the booking data
         const booking = {
             name: req.body.name,
             email: req.body.email,
             phone: req.body.phone,
-            check_in: checkInDate, // use formatted date
-            check_out: checkOutDate, // use formatted date
+            check_in: checkInDate,
+            check_out: checkOutDate,
             remarks: req.body.remarks,
             total_price: req.body.totalPrice,
         };
-        console.log("booking: ", booking)
+
         // Save booking to Supabase
         const { data, error } = await supabase
             .from('bookings')
