@@ -23,7 +23,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             remarks: req.body.remarks,
             total_price: req.body.totalPrice,
         };
-
+        console.log("booking: ", booking)
         // Save booking to Supabase
         const { data, error } = await supabase
             .from('bookings')
