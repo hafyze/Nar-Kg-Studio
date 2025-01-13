@@ -49,6 +49,8 @@
 			totalPrice: booking.totalPrice
 		};
 
+		console.log("formatted booking: ", formattedBooking)
+
 		try {
 			const response = await fetch('/api/submitBooking', {
 				method: 'POST',
