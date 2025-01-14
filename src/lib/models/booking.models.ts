@@ -7,4 +7,5 @@ export interface Booking {
     checkOut: Date
     remarks: string
     totalPrice: number
+    paid: boolean
 }

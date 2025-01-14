@@ -12,7 +12,8 @@
 		checkIn: new Date(),
 		checkOut: new Date(),
 		remarks: '',
-		totalPrice: 0
+		totalPrice: 0,
+		paid: false
 	};
 
 	function formatDate(date: Date): string {
