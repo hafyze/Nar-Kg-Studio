@@ -46,7 +46,8 @@
 			checkIn: formatDate(booking.checkIn),
 			checkOut: formatDate(booking.checkOut),
 			remarks: booking.remarks,
-			totalPrice: booking.totalPrice
+			totalPrice: booking.totalPrice,
+			paid: false
 		};
 
 		try {

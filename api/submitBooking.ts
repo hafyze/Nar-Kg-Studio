@@ -21,6 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             check_out: checkOutDate,
             remarks: req.body.remarks,
             total_price: req.body.totalPrice,
+            paid: false,
         };
 
         // Save booking to Supabase
