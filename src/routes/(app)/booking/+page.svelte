@@ -188,7 +188,7 @@
 
 		<!-- Check-In Date -->
 		<div class="mb-4">
-			<label for="checkIn" class=" text-sm font-medium text-gray-700 dark:text-gray-300">
+			<label for="checkIn" class="text-sm font-medium text-gray-700 dark:text-gray-300">
 				Check-In Date
 			</label>
 			<DateInput
@@ -197,9 +197,25 @@
 				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
 				on:input={calculatePrice}
 				on:change={() => {
+					const today = new Date();
+					today.setHours(0, 0, 0, 0);
+
+					// Ensure check-in date is not in the past
+					if (booking.checkIn < today) {
+						alert('Check-in date cannot be in the past!');
+						booking.checkIn = today;
+					}
+
+					// Prevent booking on already booked dates
 					if (bookedDates.some((date) => date.toDateString() === booking.checkIn.toDateString())) {
-						alert('Selected date is already booked!');
+						alert('Selected check-in date is already booked!');
 						booking.checkIn = new Date();
+					}
+
+					// Reset check-out date if check-in is changed
+					if (booking.checkOut && booking.checkOut <= booking.checkIn) {
+						alert('Check-out date must be after check-in date.');
+						booking.checkOut = new Date();
 					}
 				}}
 			/>
@@ -216,8 +232,21 @@
 				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
 				on:input={calculatePrice}
 				on:change={() => {
-					if (bookedDates.some((date) => date.toDateString() === booking.checkIn.toDateString())) {
-						alert('Selected date is already booked!');
+					// Ensure checkout is at least 1 day after check-in
+					if (!booking.checkIn) {
+						alert('Please select a check-in date first.');
+						booking.checkOut = new Date();
+						return;
+					}
+
+					if (booking.checkOut <= booking.checkIn) {
+						alert('Check-out date must be at least 1 day after check-in.');
+						booking.checkOut = new Date();
+					}
+
+					// Prevent booking on already booked dates
+					if (bookedDates.some((date) => date.toDateString() === booking.checkOut.toDateString())) {
+						alert('Selected check-out date is already booked!');
 						booking.checkOut = new Date();
 					}
 				}}
