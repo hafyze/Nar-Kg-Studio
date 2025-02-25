@@ -2,6 +2,7 @@
 	import { Input, Textarea, Button } from 'flowbite-svelte';
 	import { DateInput } from 'date-picker-svelte';
 	import type { Booking } from '$lib/models/booking.models.js';
+	import { onMount } from 'svelte';
 	const pricePerNight = 120;
 
 	let booking: Booking = {
@@ -15,6 +16,8 @@
 		totalPrice: 0,
 		paid: false
 	};
+
+	let bookedDates: Date[] = [];
 
 	function formatDate(date: Date): string {
 		const day = String(date.getDate()).padStart(2, '0');
@@ -39,6 +42,25 @@
 
 	$: booking.checkIn, booking.checkOut, calculatePrice();
 
+	async function getBookedDates() {
+		try {
+			const response = await fetch('/api/getBookedDates');
+			if (!response.ok) throw new Error('Failed to fetch booked dates');
+			const data = await response.json();
+
+			bookedDates = [];
+			data.bookedDates.forEach(({ checkIn, checkOut }: { checkIn: string; checkOut: string }) => {
+				const start = new Date(checkIn);
+				const end = new Date(checkOut);
+				for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+					bookedDates.push(new Date(d));
+				}
+			});
+		} catch (error) {
+			console.error('Error fetching booked dates:', error);
+		}
+	}
+
 	async function onSubmit() {
 		const formattedBooking = {
 			name: booking.name,
@@ -55,9 +77,9 @@
 			const response = await fetch('/api/submitBooking', {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(formattedBooking),
+				body: JSON.stringify(formattedBooking)
 			});
 
 			if (!response.ok) {
@@ -76,6 +98,7 @@
 		}
 	}
 
+	onMount(getBookedDates);
 </script>
 
 <!-- Development Notice -->
@@ -89,7 +112,7 @@
 </div>
 
 <!-- Contact Notice -->
-<div class="fixed left-0 right-0 top-50 z-50 bg-red-400 py-2 text-center text-white shadow-md">
+<div class="top-50 fixed left-0 right-0 z-50 bg-red-400 py-2 text-center text-white shadow-md">
 	<p class="flex items-center justify-center gap-2 text-sm font-semibold">
 		📞 <span>Please contact us directly through <strong>WhatsApp</strong> for inquiries.</span>
 		<a
@@ -119,9 +142,7 @@
 			</div>
 		</div>
 		<p class="mt-4 text-lg font-medium text-gray-800 dark:text-gray-100">
-			Price: <span class="rounded-full bg-white p-2 text-black"
-				>RM {pricePerNight} per night</span
-			>
+			Price: <span class="rounded-full bg-white p-2 text-black">RM {pricePerNight} per night</span>
 		</p>
 	</section>
 
@@ -175,6 +196,12 @@
 				format="dd-MM-yyyy"
 				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
 				on:input={calculatePrice}
+				on:change={() => {
+					if (bookedDates.some((date) => date.toDateString() === booking.checkIn.toDateString())) {
+						alert('Selected date is already booked!');
+						booking.checkIn = new Date();
+					}
+				}}
 			/>
 		</div>
 
@@ -188,6 +215,12 @@
 				format="dd-MM-yyyy"
 				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
 				on:input={calculatePrice}
+				on:change={() => {
+					if (bookedDates.some((date) => date.toDateString() === booking.checkIn.toDateString())) {
+						alert('Selected date is already booked!');
+						booking.checkOut = new Date();
+					}
+				}}
 			/>
 		</div>
 
