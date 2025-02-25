@@ -66,8 +66,8 @@
 			name: booking.name,
 			email: booking.email,
 			phone: booking.phone,
-			checkIn: formatDate(booking.checkIn),
-			checkOut: formatDate(booking.checkOut),
+			checkIn: booking.checkIn.toISOString().split('T')[0], // Format as YYYY-MM-DD
+			checkOut: booking.checkOut.toISOString().split('T')[0],
 			remarks: booking.remarks,
 			totalPrice: booking.totalPrice,
 			paid: false
@@ -195,7 +195,6 @@
 				bind:value={booking.checkIn}
 				format="dd-MM-yyyy"
 				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-				on:input={calculatePrice}
 				on:change={() => {
 					const today = new Date();
 					today.setHours(0, 0, 0, 0);
@@ -204,12 +203,14 @@
 					if (booking.checkIn < today) {
 						alert('Check-in date cannot be in the past!');
 						booking.checkIn = today;
+						return;
 					}
 
 					// Prevent booking on already booked dates
 					if (bookedDates.some((date) => date.toDateString() === booking.checkIn.toDateString())) {
 						alert('Selected check-in date is already booked!');
-						booking.checkIn = new Date();
+						booking.checkIn = new Date(); // Reset to default
+						return;
 					}
 
 					// Reset check-out date if check-in is changed
@@ -227,26 +228,30 @@
 				Check-Out Date
 			</label>
 			<DateInput
-				bind:value={booking.checkOut}
+				bind:value={booking.checkIn}
 				format="dd-MM-yyyy"
 				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-				on:input={calculatePrice}
 				on:change={() => {
-					// Ensure checkout is at least 1 day after check-in
-					if (!booking.checkIn) {
-						alert('Please select a check-in date first.');
-						booking.checkOut = new Date();
+					const today = new Date();
+					today.setHours(0, 0, 0, 0);
+
+					// Ensure check-in date is not in the past
+					if (booking.checkIn < today) {
+						alert('Check-in date cannot be in the past!');
+						booking.checkIn = today;
 						return;
 					}
 
-					if (booking.checkOut <= booking.checkIn) {
-						alert('Check-out date must be at least 1 day after check-in.');
-						booking.checkOut = new Date();
+					// Prevent booking on already booked dates
+					if (bookedDates.some((date) => date.toDateString() === booking.checkIn.toDateString())) {
+						alert('Selected check-in date is already booked!');
+						booking.checkIn = new Date(); // Reset to default
+						return;
 					}
 
-					// Prevent booking on already booked dates
-					if (bookedDates.some((date) => date.toDateString() === booking.checkOut.toDateString())) {
-						alert('Selected check-out date is already booked!');
+					// Reset check-out date if check-in is changed
+					if (booking.checkOut && booking.checkOut <= booking.checkIn) {
+						alert('Check-out date must be after check-in date.');
 						booking.checkOut = new Date();
 					}
 				}}
