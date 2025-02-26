@@ -228,7 +228,7 @@
 				Check-Out Date
 			</label>
 			<DateInput
-				bind:value={booking.checkIn}
+				bind:value={booking.checkOut}
 				format="dd-MM-yyyy"
 				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
 				on:change={() => {
