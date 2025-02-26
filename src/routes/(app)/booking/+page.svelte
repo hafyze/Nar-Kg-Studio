@@ -3,6 +3,12 @@
 	import { DateInput } from 'date-picker-svelte';
 	import type { Booking } from '$lib/models/booking.models.js';
 	import { onMount } from 'svelte';
+	import { Toast } from 'flowbite-svelte';
+	import { BanOutline, CheckOutline, InfoCircleOutline } from 'flowbite-svelte-icons';
+
+	let showToast = false;
+	let toastMessage = '';
+	let toastType: 'error' | 'warning' | 'info' | 'success' = 'info';
 	const pricePerNight = 120;
 
 	let booking: Booking = {
@@ -38,6 +44,17 @@
 		} else {
 			booking.totalPrice = 0;
 		}
+	}
+
+	function showToastMessage(message: string, type: 'error' | 'warning' | 'info' | 'success') {
+		toastMessage = message;
+		toastType = type;
+		showToast = true;
+
+		// Auto-hide toast after 3 seconds
+		setTimeout(() => {
+			showToast = false;
+		}, 3000);
 	}
 
 	$: booking.checkIn, booking.checkOut, calculatePrice();
@@ -201,21 +218,21 @@
 
 					// Ensure check-in date is not in the past
 					if (booking.checkIn < today) {
-						alert('Check-in date cannot be in the past!');
+						showToastMessage('Check-in date cannot be in the past!', 'error');
 						booking.checkIn = today;
 						return;
 					}
 
 					// Prevent booking on already booked dates
 					if (bookedDates.some((date) => date.toDateString() === booking.checkIn.toDateString())) {
-						alert('Selected check-in date is already booked!');
+						showToastMessage('Selected check-in date is already booked!', 'warning');
 						booking.checkIn = new Date(); // Reset to default
 						return;
 					}
 
 					// Reset check-out date if check-in is changed
 					if (booking.checkOut && booking.checkOut <= booking.checkIn) {
-						alert('Check-out date must be after check-in date.');
+						showToastMessage('Check-out date must be after check-in date.', 'info');
 						booking.checkOut = new Date();
 					}
 				}}
@@ -236,22 +253,22 @@
 					today.setHours(0, 0, 0, 0);
 
 					// Ensure check-in date is not in the past
-					if (booking.checkIn < today) {
-						alert('Check-in date cannot be in the past!');
-						booking.checkIn = today;
+					if (booking.checkOut < today) {
+						showToastMessage('Check-in date cannot be in the past!', 'error');
+						booking.checkOut = today;
 						return;
 					}
 
 					// Prevent booking on already booked dates
-					if (bookedDates.some((date) => date.toDateString() === booking.checkIn.toDateString())) {
-						alert('Selected check-in date is already booked!');
-						booking.checkIn = new Date(); // Reset to default
+					if (bookedDates.some((date) => date.toDateString() === booking.checkOut.toDateString())) {
+						showToastMessage('Selected check-in date is already booked!', 'warning');
+						booking.checkOut = new Date(); // Reset to default
 						return;
 					}
 
 					// Reset check-out date if check-in is changed
-					if (booking.checkOut && booking.checkOut <= booking.checkIn) {
-						alert('Check-out date must be after check-in date.');
+					if (booking.checkOut && booking.checkOut <= booking.checkOut) {
+						showToastMessage('Check-out date must be after check-in date.', 'info');
 						booking.checkOut = new Date();
 					}
 				}}
@@ -276,6 +293,34 @@
 
 		<!-- Submit Button -->
 		<Button class="w-full" on:click={onSubmit}>Submit Booking</Button>
+
+		<!-- Toast Component -->
+		{#if showToast}
+			<Toast>
+				{#if toastType === 'error'}
+					<BanOutline
+						slot="icon"
+						class="h-6 w-6 bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200"
+					/>
+				{:else if toastType === 'warning'}
+					<BanOutline
+						slot="icon"
+						class="h-6 w-6 bg-yellow-100 text-yellow-500 dark:bg-yellow-800 dark:text-yellow-200"
+					/>
+				{:else if toastType === 'info'}
+					<InfoCircleOutline
+						slot="icon"
+						class="h-6 w-6 bg-blue-100 text-blue-500 dark:bg-blue-800 dark:text-blue-200"
+					/>
+				{:else}
+					<CheckOutline
+						slot="icon"
+						class="h-6 w-6 bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200"
+					/>
+				{/if}
+				{toastMessage}
+			</Toast>
+		{/if}
 	</section>
 </div>
 
