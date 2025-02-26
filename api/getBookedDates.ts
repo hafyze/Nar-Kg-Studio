@@ -28,13 +28,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         // Convert the fetched dates into an array of booked date ranges
         const bookedDates = data.map(({ check_in, check_out }) => ({
-            checkIn: new Date(check_in).toISOString(),
-            checkOut: new Date(check_out).toISOString()
+            checkIn: new Date(check_in + "Z").toISOString(),  // Append 'Z' to ensure UTC interpretation
+            checkOut: new Date(check_out + "Z").toISOString()
         }));
-        
-        console.log("Raw data from Supabase:", data);
-        console.log("Processed bookedDates:", bookedDates);
-        
+                
+        console.log("Raw Supabase Data:", JSON.stringify(data, null, 2));
+        console.log("Processed bookedDates:", JSON.stringify(bookedDates, null, 2));
+                
         res.status(200).json({ bookedDates });
     } catch (err) {
         console.error("Unexpected error:", err);
