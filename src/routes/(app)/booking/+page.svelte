@@ -64,7 +64,7 @@
 			const response = await fetch('/api/getBookedDates');
 			if (!response.ok) throw new Error('Failed to fetch booked dates');
 			const data = await response.json();
-
+			console.log("BookedDates: ", data)
 			bookedDates = [];
 			data.bookedDates.forEach(({ checkIn, checkOut }: { checkIn: string; checkOut: string }) => {
 				const start = new Date(checkIn);
