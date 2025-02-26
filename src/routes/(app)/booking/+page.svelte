@@ -66,8 +66,8 @@
 			name: booking.name,
 			email: booking.email,
 			phone: booking.phone,
-			checkIn: booking.checkIn.toISOString().split('T')[0], // Format as YYYY-MM-DD
-			checkOut: booking.checkOut.toISOString().split('T')[0],
+			checkIn: formatDate(booking.checkIn),
+			checkOut: formatDate(booking.checkOut),
 			remarks: booking.remarks,
 			totalPrice: booking.totalPrice,
 			paid: false
