@@ -60,23 +60,32 @@
 	$: booking.checkIn, booking.checkOut, calculatePrice();
 
 	async function getBookedDates() {
-		try {
-			const response = await fetch('/api/getBookedDates');
-			if (!response.ok) throw new Error('Failed to fetch booked dates');
-			const data = await response.json();
-			bookedDates = [];
-			data.bookedDates.forEach(({ checkIn, checkOut }: { checkIn: string; checkOut: string }) => {
-				const start = new Date(checkIn);
-				const end = new Date(checkOut);
-				for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-					bookedDates.push(new Date(d));
-				}
-			});
-			console.log("Booked dates:", bookedDates);
-		} catch (error) {
-			console.error('Error fetching booked dates:', error);
-		}
+	try {
+		const response = await fetch('/api/getBookedDates');
+		if (!response.ok) throw new Error('Failed to fetch booked dates');
+		const data = await response.json();
+		bookedDates = [];
+
+		data.bookedDates.forEach(({ checkIn, checkOut }: { checkIn: string; checkOut: string }) => {
+			const start = new Date(checkIn);
+			start.setHours(0, 0, 0, 0); 
+
+			const end = new Date(checkOut);
+			end.setHours(0, 0, 0, 0); 
+
+			for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+				const normalizedDate = new Date(d);
+				normalizedDate.setHours(0, 0, 0, 0);
+				bookedDates.push(normalizedDate);
+			}
+		});
+
+		console.log('Booked dates:', bookedDates);
+	} catch (error) {
+		console.error('Error fetching booked dates:', error);
 	}
+}
+
 
 	async function onSubmit() {
 		const formattedBooking = {
@@ -214,28 +223,33 @@
 				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
 				on:change={() => {
 					const today = new Date();
-					today.setHours(0, 0, 0, 0);
-
+					today.setHours(0, 0, 0, 0); // Normalize to 00:00:00
+				
 					// Ensure check-in date is not in the past
 					if (booking.checkIn < today) {
 						showToastMessage('Check-in date cannot be in the past!', 'error');
 						booking.checkIn = today;
 						return;
 					}
-
+				
+					// Normalize booking.checkIn for comparison
+					const selectedCheckIn = new Date(booking.checkIn);
+					selectedCheckIn.setHours(0, 0, 0, 0); // Normalize to 00:00:00
+				
 					// Prevent booking on already booked dates
-					if (bookedDates.some((date) => date.toDateString() === booking.checkIn.toDateString())) {
+					if (bookedDates.some(date => date.getTime() === selectedCheckIn.getTime())) {
 						showToastMessage('Selected check-in date is already booked!', 'warning');
-						booking.checkIn = new Date(); // Reset to default
+						booking.checkIn = new Date(); // Clear input
 						return;
 					}
-
+				
 					// Reset check-out date if check-in is changed
 					if (booking.checkOut && booking.checkOut <= booking.checkIn) {
 						showToastMessage('Check-out date must be after check-in date.', 'info');
-						booking.checkOut = new Date();
+						booking.checkOut = new Date(); // Clear input
 					}
 				}}
+				
 			/>
 		</div>
 
@@ -250,28 +264,41 @@
 				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
 				on:change={() => {
 					const today = new Date();
-					today.setHours(0, 0, 0, 0);
-
-					// Ensure check-in date is not in the past
+					today.setHours(0, 0, 0, 0); // Normalize today to 00:00:00
+				
+					// Ensure check-out date is not in the past
 					if (booking.checkOut < today) {
-						showToastMessage('Check-in date cannot be in the past!', 'error');
-						booking.checkOut = today;
+						showToastMessage('Check-out date cannot be in the past!', 'error');
+						booking.checkOut = new Date(today);
+						booking.checkOut.setDate(booking.checkOut.getDate() + 1); // Set to tomorrow
 						return;
 					}
-
+				
+					// Ensure check-out date is at least one day after check-in
+					if (booking.checkIn) {
+						const checkInDate = new Date(booking.checkIn);
+						checkInDate.setHours(0, 0, 0, 0);
+				
+						if (booking.checkOut <= checkInDate) {
+							showToastMessage('Check-out date must be at least one day after check-in.', 'info');
+							booking.checkOut = new Date(checkInDate);
+							booking.checkOut.setDate(booking.checkOut.getDate() + 1); // Set to the next day
+							return;
+						}
+					}
+				
+					// Normalize booking.checkOut for comparison
+					const selectedCheckOut = new Date(booking.checkOut);
+					selectedCheckOut.setHours(0, 0, 0, 0); // Normalize to 00:00:00
+				
 					// Prevent booking on already booked dates
-					if (bookedDates.some((date) => date.toDateString() === booking.checkOut.toDateString())) {
-						showToastMessage('Selected check-in date is already booked!', 'warning');
-						booking.checkOut = new Date(); // Reset to default
+					if (bookedDates.some(date => date.getTime() === selectedCheckOut.getTime())) {
+						showToastMessage('Selected check-out date is already booked!', 'warning');
+						booking.checkOut = new Date();; // Clear input
 						return;
-					}
-
-					// Reset check-out date if check-in is changed
-					if (booking.checkOut && booking.checkOut <= booking.checkOut) {
-						showToastMessage('Check-out date must be after check-in date.', 'info');
-						booking.checkOut = new Date();
 					}
 				}}
+				
 			/>
 		</div>
 
