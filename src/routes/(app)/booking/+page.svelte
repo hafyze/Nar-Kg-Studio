@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { Toast } from 'flowbite-svelte';
 	import { BanOutline, CheckOutline, InfoCircleOutline } from 'flowbite-svelte-icons';
+	import { DatePicker } from "@svelte-plugins/datepicker";
 
 	let showToast = false;
 	let toastMessage = '';
@@ -217,40 +218,24 @@
 			<label for="checkIn" class="text-sm font-medium text-gray-700 dark:text-gray-300">
 				Check-In Date
 			</label>
-			<DateInput
-				bind:value={booking.checkIn}
+			<DatePicker
+				bind:date={booking.checkIn}
 				format="dd-MM-yyyy"
+				startOfWeek={1}
+				disableDates={bookedDates}
 				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-				on:change={() => {
+				on:dateSelected={() => {
 					const today = new Date();
-					today.setHours(0, 0, 0, 0); // Normalize to 00:00:00
-				
-					// Ensure check-in date is not in the past
+					today.setHours(0, 0, 0, 0);
+
 					if (booking.checkIn < today) {
 						showToastMessage('Check-in date cannot be in the past!', 'error');
 						booking.checkIn = today;
 						return;
 					}
-				
-					// Normalize booking.checkIn for comparison
-					const selectedCheckIn = new Date(booking.checkIn);
-					selectedCheckIn.setHours(0, 0, 0, 0); // Normalize to 00:00:00
-				
-					// Prevent booking on already booked dates
-					if (bookedDates.some(date => date.getTime() === selectedCheckIn.getTime())) {
-						showToastMessage('Selected check-in date is already booked!', 'warning');
-						booking.checkIn = new Date(); // Clear input
-						return;
-					}
-				
-					// Reset check-out date if check-in is changed
-					if (booking.checkOut && booking.checkOut <= booking.checkIn) {
-						showToastMessage('Check-out date must be after check-in date.', 'info');
-						booking.checkOut = new Date(); // Clear input
-					}
 				}}
-				
 			/>
+
 		</div>
 
 		<!-- Check-Out Date -->
@@ -258,47 +243,30 @@
 			<label for="checkOut" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
 				Check-Out Date
 			</label>
-			<DateInput
-				bind:value={booking.checkOut}
+			<DatePicker
+				bind:date={booking.checkOut}
 				format="dd-MM-yyyy"
+				startOfWeek={1}
+				disableDates={bookedDates}
 				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-				on:change={() => {
+				on:dateSelected={() => {
 					const today = new Date();
-					today.setHours(0, 0, 0, 0); // Normalize today to 00:00:00
-				
-					// Ensure check-out date is not in the past
+					today.setHours(0, 0, 0, 0);
+
 					if (booking.checkOut < today) {
 						showToastMessage('Check-out date cannot be in the past!', 'error');
 						booking.checkOut = new Date(today);
-						booking.checkOut.setDate(booking.checkOut.getDate() + 1); // Set to tomorrow
+						booking.checkOut.setDate(booking.checkOut.getDate() + 1);
 						return;
 					}
-				
-					// Ensure check-out date is at least one day after check-in
-					if (booking.checkIn) {
-						const checkInDate = new Date(booking.checkIn);
-						checkInDate.setHours(0, 0, 0, 0);
-				
-						if (booking.checkOut <= checkInDate) {
-							showToastMessage('Check-out date must be at least one day after check-in.', 'info');
-							booking.checkOut = new Date(checkInDate);
-							booking.checkOut.setDate(booking.checkOut.getDate() + 1); // Set to the next day
-							return;
-						}
-					}
-				
-					// Normalize booking.checkOut for comparison
-					const selectedCheckOut = new Date(booking.checkOut);
-					selectedCheckOut.setHours(0, 0, 0, 0); // Normalize to 00:00:00
-				
-					// Prevent booking on already booked dates
-					if (bookedDates.some(date => date.getTime() === selectedCheckOut.getTime())) {
-						showToastMessage('Selected check-out date is already booked!', 'warning');
-						booking.checkOut = new Date();; // Clear input
-						return;
+
+					// Ensure check-out is at least 1 night after check-in
+					if (booking.checkOut <= booking.checkIn) {
+						showToastMessage('Check-out date must be after check-in!', 'error');
+						booking.checkOut = new Date(booking.checkIn);
+						booking.checkOut.setDate(booking.checkOut.getDate() + 1);
 					}
 				}}
-				
 			/>
 		</div>
 
