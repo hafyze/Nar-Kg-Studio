@@ -81,6 +81,29 @@
 					</a>
 				</div>
 			</div>
+			<!-- Penang Street Art -->
+			<div class="flex items-center space-x-4 border-b border-gray-300 pb-4 dark:border-gray-700">
+				<img
+					src="/images/penang_street_art.jpg"
+					alt="queensbay mall"
+					class="h-24 w-24 rounded-lg border border-gray-300 object-cover dark:border-gray-700"
+				/>
+
+				<!-- description -->
+				<div>
+					<P class="text-xl font-semibold text-gray-700 dark:text-gray-200">Penang Street Art</P>
+					<p class="mt-1 text-gray-600 dark:text-gray-400">
+						Explore iconic murals and interactive wall art throughout George Town.
+					</p>
+					<a
+						href="https://maps.app.goo.gl/vuWcJqYFB1pWiVZq9"
+						class="mt-2 inline-block text-sm font-medium text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+						target="_blank"
+					>
+						Get Directions →
+					</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
