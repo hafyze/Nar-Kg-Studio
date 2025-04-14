@@ -1,12 +1,16 @@
-# Running the web
+# 1.0 Running the web
 
 git clone via https
+
+## 1.1 IMPORTANT
+
+In package.json, change the value of engines block from 21 to 23
 
 npm install
 
 npm run dev
 
-## Developing
+## 2.0 Developing (ignore)
 
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
