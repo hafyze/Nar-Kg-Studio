@@ -58,6 +58,7 @@
 		}, 3000);
 	}
 
+	// Automatically Runs when there is changes
 	$: booking.checkIn, booking.checkOut, calculatePrice();
 
 	async function getBookedDates() {
