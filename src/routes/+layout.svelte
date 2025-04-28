@@ -21,6 +21,7 @@
                 <NavLi href="/attraction">Attractions</NavLi>
                 <NavLi href="/about">About</NavLi>
                 <NavLi href="/contact">Contact</NavLi>
+                <NavLi href="/faq">FAQ</NavLi>
                 <DarkMode btnClass="text-center"/>
               </NavUl>
         </Navbar>
