@@ -3,6 +3,8 @@
     import { Carousel, Thumbnails, Card, Spinner } from "flowbite-svelte";
     import { MapPinOutline } from 'flowbite-svelte-icons';
 
+    console.log("Booking page loaded");
+    
     let images: any = [];
     let index = 0;
     let forward = true;
