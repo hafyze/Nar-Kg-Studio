@@ -11,7 +11,7 @@
   
     // For the dynamic content toggle
     let showCountryside: boolean = true; // Controls which content to display
-    console.log("Chimpanzini bananinin")
+    console.log("100 Humans vs 1 Gorilla")
     // Fetch images data from the server-side endpoint
     onMount(async () => {
       const res = await fetch('/imageData');
