@@ -9,9 +9,14 @@ const supabase = createClient(
 );
 
 export async function GET() {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	const isToday = today.toISOString()
+
 	const { data, error } = await supabase
 		.from('bookings')
 		.select('check_in, check_out')
+		.gte('check_in', isToday)
 		.order('check_in', { ascending: true });
 
 	if (error) {
