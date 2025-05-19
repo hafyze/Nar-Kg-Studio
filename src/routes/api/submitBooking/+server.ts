@@ -7,7 +7,7 @@ const supabase = createClient(
     process.env.SUPABASE_ANON_KEY || ''
 );
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export  async function POST(req: VercelRequest, res: VercelResponse) {
     if (req.method === 'POST') {
         const checkInDate = req.body.checkIn.split('-').reverse().join('-'); // Convert to 'yyyy-MM-dd'
         const checkOutDate = req.body.checkOut.split('-').reverse().join('-'); // Convert to 'yyyy-MM-dd'
