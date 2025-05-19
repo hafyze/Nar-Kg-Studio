@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { Input, Textarea, Button } from 'flowbite-svelte';
-	import { DateInput } from 'date-picker-svelte';
+	// import { DateInput } from 'date-picker-svelte';
 	import type { Booking } from '$lib/models/booking.models.js';
 	import { onMount } from 'svelte';
 	import { Toast } from 'flowbite-svelte';
 	import { BanOutline, CheckOutline, InfoCircleOutline } from 'flowbite-svelte-icons';
-	import { DatePicker } from "@svelte-plugins/datepicker";
+	import DatePicker from '$lib/components/DatePicker.svelte';
 
 	let showToast = false;
 	let toastMessage = '';
 	let toastType: 'error' | 'warning' | 'info' | 'success' = 'info';
+
 	const pricePerNight = 120;
 
 	let booking: Booking = {
@@ -18,11 +19,16 @@
 		email: '',
 		phone: '',
 		checkIn: new Date(),
-		checkOut: new Date(),
+		checkOut: (() => {
+			const d = new Date();
+			d.setDate(d.getDate() + 1);
+			return d;
+		})(),
 		remarks: '',
 		totalPrice: 0,
 		paid: false
 	};
+	let selectedDates: Date[] = [booking.checkIn, booking.checkOut];
 
 	let bookedDates: Date[] = [];
 
@@ -31,6 +37,11 @@
 		const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
 		const year = date.getFullYear();
 		return `${day}-${month}-${year}`;
+	}
+
+	function handlePickerChange(dates: Date[]) {
+		booking.checkIn = dates[0];
+		booking.checkOut = dates[1];
 	}
 
 	// Function to calculate total price
@@ -60,34 +71,34 @@
 
 	// Automatically Runs when there is changes
 	$: booking.checkIn, booking.checkOut, calculatePrice();
+	$: console.log(booking.checkIn, booking.checkOut);
 
 	async function getBookedDates() {
-	try {
-		const response = await fetch('/api/getBookedDates');
-		if (!response.ok) throw new Error('Failed to fetch booked dates');
-		const data = await response.json();
-		bookedDates = [];
+		try {
+			const response = await fetch('/api/getBookedDates');
+			if (!response.ok) throw new Error('Failed to fetch booked dates');
+			const data = await response.json();
+			bookedDates = [];
 
-		data.bookedDates.forEach(({ checkIn, checkOut }: { checkIn: string; checkOut: string }) => {
-			const start = new Date(checkIn);
-			start.setHours(0, 0, 0, 0); 
+			data.bookedDates.forEach(({ checkIn, checkOut }: { checkIn: string; checkOut: string }) => {
+				const start = new Date(checkIn);
+				start.setHours(0, 0, 0, 0);
 
-			const end = new Date(checkOut);
-			end.setHours(0, 0, 0, 0); 
+				const end = new Date(checkOut);
+				end.setHours(0, 0, 0, 0);
 
-			for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-				const normalizedDate = new Date(d);
-				normalizedDate.setHours(0, 0, 0, 0);
-				bookedDates.push(normalizedDate);
-			}
-		});
+				for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+					const normalizedDate = new Date(d);
+					normalizedDate.setHours(0, 0, 0, 0);
+					bookedDates.push(normalizedDate);
+				}
+			});
 
-		console.log('Booked dates:', bookedDates);
-	} catch (error) {
-		console.error('Error fetching booked dates:', error);
+			console.log('Booked dates:', bookedDates);
+		} catch (error) {
+			console.error('Error fetching booked dates:', error);
+		}
 	}
-}
-
 
 	async function onSubmit() {
 		const formattedBooking = {
@@ -202,7 +213,7 @@
 
 		<!-- Phone Input -->
 		<div class="mb-4">
-			<label for="phone" class=" text-sm font-medium text-gray-700 dark:text-gray-300">
+			<label for="phone" class="text-sm font-medium text-gray-700 dark:text-gray-300">
 				Phone Number
 			</label>
 			<Input
@@ -214,61 +225,21 @@
 			/>
 		</div>
 
-		<!-- Check-In Date -->
 		<div class="mb-4">
-			<label for="checkIn" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-				Check-In Date
+			<label for="date" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+				Select Date
 			</label>
-			<DatePicker
-				bind:date={booking.checkIn}
-				format="dd-MM-yyyy"
-				startOfWeek={1}
-				disableDates={bookedDates}
-				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-				on:dateSelected={() => {
-					const today = new Date();
-					today.setHours(0, 0, 0, 0);
-
-					if (booking.checkIn < today) {
-						showToastMessage('Check-in date cannot be in the past!', 'error');
-						booking.checkIn = today;
-						return;
-					}
-				}}
-			/>
-
+			<div
+				class="w-full rounded-md border border-gray-300 bg-white p-2 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800"
+			>
+				<DatePicker {selectedDates} on:change={(e) => handlePickerChange(e.detail)} />
+			</div>
 		</div>
 
-		<!-- Check-Out Date -->
-		<div class="mb-4">
-			<label for="checkOut" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-				Check-Out Date
-			</label>
-			<DatePicker
-				bind:date={booking.checkOut}
-				format="dd-MM-yyyy"
-				startOfWeek={1}
-				disableDates={bookedDates}
-				class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-				on:dateSelected={() => {
-					const today = new Date();
-					today.setHours(0, 0, 0, 0);
-
-					if (booking.checkOut < today) {
-						showToastMessage('Check-out date cannot be in the past!', 'error');
-						booking.checkOut = new Date(today);
-						booking.checkOut.setDate(booking.checkOut.getDate() + 1);
-						return;
-					}
-
-					// Ensure check-out is at least 1 night after check-in
-					if (booking.checkOut <= booking.checkIn) {
-						showToastMessage('Check-out date must be after check-in!', 'error');
-						booking.checkOut = new Date(booking.checkIn);
-						booking.checkOut.setDate(booking.checkOut.getDate() + 1);
-					}
-				}}
-			/>
+		<!-- Check-in/out Display -->
+		<div class="mb-4 grid grid-cols-1 gap-1 text-sm text-gray-700 dark:text-gray-300">
+			<p>Check-In: <span class="font-medium">{formatDate(booking.checkIn)}</span></p>
+			<p>Check-Out: <span class="font-medium">{formatDate(booking.checkOut)}</span></p>
 		</div>
 
 		<!-- Remarks -->
