@@ -8,6 +8,8 @@ In package.json, change the value of engines block from 21 to 23
 
 npm install
 
+after complete install (no errors), change back value of engines block from 23 to 21
+
 npm run dev
 
 ## 2.0 Developing (ignore)
