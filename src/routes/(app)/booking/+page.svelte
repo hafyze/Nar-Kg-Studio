@@ -58,7 +58,7 @@
 			const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
 			booking.totalPrice = nights * pricePerNight;
 			if (booking.option == 'yes') {
-				booking.totalPrice += 30;
+				booking.totalPrice += 20;
 			}
 		} else {
 			booking.totalPrice = 0;
@@ -252,7 +252,7 @@
 		<!-- Extra mattress/toto -->
 		<div class="mb-4">
 			<label for="mattress" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-				Add on mattress/toto (RM 30)
+				Add on mattress/toto (RM 20)
 			</label>
 
 			<p><label for="mattress" class="text-sm font-small text-gray-700 dark:text-gray-300"> 
