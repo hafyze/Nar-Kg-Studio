@@ -12,6 +12,7 @@
 	let toastType: 'error' | 'warning' | 'info' | 'success' = 'info';
 
 	const pricePerNight = 120;
+	const mattressPrice = 30; 
 
 	let booking: Booking = {
 		id: '',
@@ -24,6 +25,7 @@
 			d.setDate(d.getDate() + 1);
 			return d;
 		})(),
+		option: '',
 		remarks: '',
 		totalPrice: 0,
 		paid: false
@@ -31,6 +33,8 @@
 	let selectedDates: Date[] = [booking.checkIn, booking.checkOut];
 
 	let bookedDates: Date[] = [];
+
+	
 
 	function formatDate(date: Date): string {
 		const day = String(date.getDate()).padStart(2, '0');
@@ -53,6 +57,9 @@
 			const diffTime = Math.max(checkOutDate - checkInDate, 0);
 			const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
 			booking.totalPrice = nights * pricePerNight;
+			if (booking.option == 'yes') {
+				booking.totalPrice += 30;
+			}
 		} else {
 			booking.totalPrice = 0;
 		}
@@ -240,6 +247,25 @@
 		<div class="mb-4 grid grid-cols-1 gap-1 text-sm text-gray-700 dark:text-gray-300">
 			<p>Check-In: <span class="font-medium">{formatDate(booking.checkIn)}</span></p>
 			<p>Check-Out: <span class="font-medium">{formatDate(booking.checkOut)}</span></p>
+		</div>
+
+		<!-- Extra mattress/toto -->
+		<div class="mb-4">
+			<label for="mattress" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+				Add on mattress/toto (RM 30)
+			</label>
+
+			<p><label for="mattress" class="text-sm font-small text-gray-700 dark:text-gray-300"> 
+				<input type="radio" bind:group={booking.option} value="yes" />
+				Yes
+			</label></p>
+
+			<p><label for="mattress" class="text-sm font-small text-gray-700 dark:text-gray-300"> 
+				<input type="radio" bind:group={booking.option} value="no" />
+				No
+			</label></p>
+			
+			
 		</div>
 
 		<!-- Remarks -->
