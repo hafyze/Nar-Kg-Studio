@@ -5,6 +5,7 @@ export interface Booking {
     phone: string
     checkIn: Date
     checkOut: Date
+    option: string
     remarks: string
     totalPrice: number
     paid: boolean
