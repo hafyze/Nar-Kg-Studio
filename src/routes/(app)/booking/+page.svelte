@@ -272,7 +272,7 @@
 		<div class="mb-4">
 			<Textarea
 				bind:value={booking.remarks}
-				placeholder="Enter additional requests or remarks"
+				placeholder="Enter additional requests or remarks*"
 				class="w-full"
 			/>
 		</div>
@@ -286,6 +286,8 @@
 
 		<!-- Submit Button -->
 		<Button class="w-full" on:click={onSubmit}>Submit Booking</Button>
+
+		
 
 		<!-- Toast Component -->
 		{#if showToast}
@@ -316,6 +318,13 @@
 		{/if}
 	</section>
 </div>
+
+<!-- Footnote -->
+		<div class="mx-auto mt-3 max-w-4xl">
+			<p class="text-sm ml-3 font-weight: 300 text-gray-800 dark:text-gray-100">
+				*We will review your additional request/remarks and notify via email
+			</p>
+		</div>
 
 <style>
 	:global(.datepicker-wrapper) {
