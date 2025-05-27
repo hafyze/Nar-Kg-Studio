@@ -12,7 +12,6 @@
 	let toastType: 'error' | 'warning' | 'info' | 'success' = 'info';
 
 	const pricePerNight = 120;
-	const mattressPrice = 20; 
 
 	let booking: Booking = {
 		id: '',
