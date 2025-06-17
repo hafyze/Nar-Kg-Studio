@@ -23,7 +23,7 @@
                     <MapPinAltOutline class="mr-2 text-gray-500" />
                     <span class="text-white-800">
                         Kampung Teluk Kumbar, 11950 Bayan Lepas, Penang
-                        <a class="text-xs italic text-blue-500" href="https://maps.app.goo.gl/6tL6cUkkCrn5Nvvg8" target="_blank">direction</a>
+                        <a class="text-xs italic text-blue-500" href="https://maps.app.goo.gl/bWq8Ak5bMY7PH5zD6" target="_blank">direction</a>
                     </span>
                 </div>
             </div>
