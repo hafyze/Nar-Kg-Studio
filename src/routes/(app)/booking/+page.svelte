@@ -50,15 +50,24 @@
 	// Function to calculate total price
 	function calculatePrice() {
 		if (booking.checkIn && booking.checkOut) {
-			const checkInDate = booking.checkIn.getTime(); // Directly use Date object
-			const checkOutDate = booking.checkOut.getTime(); // Directly use Date object
+			const checkIn = new Date(booking.checkIn);
+			const checkOut = new Date(booking.checkOut);
+			checkIn.setHours(0, 0, 0, 0);
+			checkOut.setHours(0, 0, 0, 0);
 
-			const diffTime = Math.max(checkOutDate - checkInDate, 0);
-			const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
-			booking.totalPrice = nights * pricePerNight;
-			if (booking.option == 'yes') {
-				booking.totalPrice += 20;
+			let total = 0;
+
+			for (let d = new Date(checkIn); d < checkOut; d.setDate(d.getDate() + 1)) {
+				const day = d.getDay(); // 0 = Sunday, 6 = Saturday
+				const isWeekend = day === 0 || day === 6;
+				total += isWeekend ? 120 : 100;
 			}
+
+			if (booking.option === 'yes') {
+				total += 10;
+			}
+
+			booking.totalPrice = total;
 		} else {
 			booking.totalPrice = 0;
 		}
@@ -187,7 +196,10 @@
 			</div>
 		</div>
 		<p class="mt-4 text-lg font-medium text-gray-800 dark:text-gray-100">
-			Price: <span class="rounded-full bg-white p-2 text-black">RM {pricePerNight} per night</span>
+			Price:
+			<span class="rounded-2xl bg-white p-2 text-black">
+				RM100 (Weekday) / RM120 (Weekend) per night
+			</span>
 		</p>
 	</section>
 
@@ -251,7 +263,7 @@
 		<!-- Extra mattress/toto -->
 		<div class="mb-4">
 			<label for="mattress" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-				Add on mattress/toto (RM 20)
+				Add on mattress/toto (RM 10)
 			</label>
 
 			<p><label for="mattress" class="text-sm font-small text-gray-700 dark:text-gray-300"> 
@@ -281,6 +293,14 @@
 			<p class="text-lg font-medium text-gray-800 dark:text-gray-100">
 				Total Price: <span class="rounded-xl bg-white p-2 text-black">RM {booking.totalPrice}</span>
 			</p>
+		</div>
+
+		<!-- Terms_Condition -->
+		<div class="my-2 text-sm text-gray-600 dark:text-gray-400">
+			<label>
+				<input type="checkbox" required />
+				I agree to the <a href="/terms" class="underline">Terms & Conditions</a> and <a href="/privacy" class="underline">Privacy Policy</a>.
+			</label>
 		</div>
 
 		<!-- Submit Button -->
