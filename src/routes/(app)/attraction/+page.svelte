@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { Heading, P } from 'flowbite-svelte';
 </script>
-
+<svelte:head>
+	<title>Attractions</title>
+</svelte:head>
 <div class="bg-gray-100 py-10 dark:bg-gray-800">
 	<div class="mx-auto max-w-4xl rounded-lg bg-white p-6 shadow-lg dark:bg-gray-900">
 		<Heading class="mb-6 text-center text-3xl font-bold text-gray-800 dark:text-gray-100"

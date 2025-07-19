@@ -154,7 +154,9 @@
 
 	onMount(getBookedDates);
 </script>
-
+<svelte:head>
+	<title>Booking Studio</title>
+</svelte:head>
 <!-- Development Notice -->
 <div class="fixed left-0 right-0 top-20 z-50 bg-yellow-500 py-2 text-center text-black shadow-md">
 	<p class="flex items-center justify-center gap-2 text-sm font-semibold">

@@ -3,6 +3,10 @@
     import { EnvelopeOutline, PhoneOutline, MapPinAltOutline, WhatsappSolid } from 'flowbite-svelte-icons';
 </script>
 
+<svelte:head>
+	<title>Contacts</title>
+</svelte:head>
+
 <div class="">
     <Card padding="md" class="mx-auto w-3/4">
         <div class="flex flex-col items-center pb-4">

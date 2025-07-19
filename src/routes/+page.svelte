@@ -24,6 +24,11 @@
       showCountryside = !showCountryside; // Toggle between countryside and urban
     }
 </script>
+
+<svelte:head>
+	<title>Nar Guest Room</title>
+</svelte:head>
+
   <div class="bg-blue-500 text-white text-center py-2 rounded-md mb-4">
     <p class="text-lg ">Starting from just <span class="text-2xl font-bold">RM100</span> per night!</p>
   </div>
