@@ -11,8 +11,6 @@
 	let toastMessage = '';
 	let toastType: 'error' | 'warning' | 'info' | 'success' = 'info';
 
-	const pricePerNight = 120;
-
 	let booking: Booking = {
 		id: '',
 		name: '',
@@ -58,9 +56,9 @@
 			let total = 0;
 
 			for (let d = new Date(checkIn); d < checkOut; d.setDate(d.getDate() + 1)) {
-				const day = d.getDay(); // 0 = Sunday, 6 = Saturday
-				const isWeekend = day === 0 || day === 6;
-				total += isWeekend ? 120 : 100;
+				const day = d.getDay(); // 5 = Friday, 6 = Saturday
+				const isWeekend = day === 5 || day === 6;
+				total += isWeekend ? 125 : 110;
 			}
 
 			if (booking.option === 'yes') {
@@ -197,11 +195,17 @@
 				</ul>
 			</div>
 		</div>
-		<p class="mt-4 text-lg font-medium text-gray-800 dark:text-gray-100">
-			Price:
-			<span class="rounded-2xl bg-white p-2 text-black">
-				RM100 (Weekday) / RM120 (Weekend) per night
+		<p class="mt-4 text-lg font-medium text-gray-800 dark:text-gray-100 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2">
+			<span>Price:</span>
+			<span class="rounded-2xl bg-white px-3 py-1 text-black w-fit">
+				RM110 (Weekday)
 			</span>
+			<span class="rounded-2xl bg-white px-3 py-1 text-black w-fit">
+				RM125 (Weekend) per night
+			</span>
+		</p>
+		<p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+			Weekday: Sunday to Thursday &nbsp;|&nbsp; Weekend: Friday and Saturday
 		</p>
 	</section>
 
