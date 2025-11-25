@@ -9,20 +9,21 @@
 
 <div>
     <div class="relative px-8">
-        <Navbar class="px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 start-0 border-b">
+        <Navbar class="px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 start-0 border-b bg-neutral-50 dark:bg-gray-900">
             <NavBrand href="/">
-                <span class="flex items-center  self-center whitespace-nowrap text-xl font-semibold dark:text-white"><BedOutline />NAR Guest Room</span>
+                <span class="flex items-center self-center whitespace-nowrap text-xl font-semibold dark:text-white"><BedOutline />NAR Guest Room</span>
               </NavBrand>
 			  <div class="flex md:order-2">
 				<Button size="sm" href="/booking">Book Now</Button>
 				<NavHamburger /> 
-			  </div>              <NavUl>
+			  </div>              
+              <NavUl>
                 <NavLi href="/"> Home</NavLi>
                 <NavLi href="/attraction">Attractions</NavLi>
                 <NavLi href="/about">About</NavLi>
                 <NavLi href="/contact">Contact</NavLi>
                 <NavLi href="/faq">FAQ</NavLi>
-                <DarkMode btnClass="text-center"/>
+                <DarkMode btnClass="text-center ml-2"/>
               </NavUl>
         </Navbar>
     </div>

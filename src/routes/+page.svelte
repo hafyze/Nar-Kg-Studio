@@ -26,14 +26,14 @@
 </script>
 
 <svelte:head>
-	<title>Nar Guest Room</title>
+	<title>Nar Kampung Studio</title>
 </svelte:head>
 
-  <div class="bg-blue-500 text-white text-center py-2 rounded-md mb-4">
-    <p class="text-lg ">Starting from just <span class="text-2xl font-bold">RM110</span> per night!</p>
+  <div class="bg-blue-500 text-white text-center py-2 rounded-md mb-4 mx-auto">
+    <p class="text-lg ">Starting from just <span class="text-2xl font-bold">RM100</span> per night!</p>
   </div>
 
-  <div class="max-w-4xl space-y-4 mx-auto">
+  <div class="max-w-4xl space-y-4 mx-auto ">
     {#if !loading}
       <Carousel 
         imgClass="object-scale-down h-full rounded-sm"

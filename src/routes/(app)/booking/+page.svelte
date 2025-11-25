@@ -58,7 +58,7 @@
 			for (let d = new Date(checkIn); d < checkOut; d.setDate(d.getDate() + 1)) {
 				const day = d.getDay(); // 5 = Friday, 6 = Saturday
 				const isWeekend = day === 5 || day === 6;
-				total += isWeekend ? 125 : 110;
+				total += isWeekend ? 120 : 100;
 			}
 
 			if (booking.option === 'yes') {
@@ -84,7 +84,6 @@
 
 	// Automatically Runs when there is changes
 	$: booking.checkIn, booking.checkOut, calculatePrice();
-	$: console.log(booking.checkIn, booking.checkOut);
 
 	async function getBookedDates() {
 		try {
@@ -125,6 +124,7 @@
 			paid: false
 		};
 
+		console.log("SubmittedBooking: ", formattedBooking)
 		try {
 			const response = await fetch('/api/submitBooking', {
 				method: 'POST',
@@ -184,24 +184,26 @@
 >
 	<!-- Room Information Section -->
 	<section class="mb-8">
-		<h1 class="mb-4 text-3xl font-semibold text-gray-800 dark:text-gray-100">Studio Room</h1>
+		<h1 class="mb-4 text-3xl font-semibold text-gray-800 dark:text-gray-100">Deluxe Queen Studio</h1>
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 			<img src="/images/bed.jpg" alt="Room" class="h-64 w-full rounded-lg object-cover" />
-			<div>
-				<ul class="list-disc pl-5 text-gray-700 dark:text-gray-300">
+			<div class="ml-4">
+				<ul class="list-disc text-gray-700 dark:text-gray-300">
 					<li class="mb-2">Air-conditioned room with queen-sized bed</li>
 					<li class="mb-2">Private bathroom with hot shower</li>
 					<li class="mb-2">Complimentary bottled water</li>
+					<li class="mb-2">Park in front of property</li>
+					<li class="mb-2 font-bold">non-smoking room</li>
 				</ul>
 			</div>
 		</div>
 		<p class="mt-4 text-lg font-medium text-gray-800 dark:text-gray-100 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2">
 			<span>Price:</span>
-			<span class="rounded-2xl bg-white px-3 py-1 text-black w-fit">
-				RM110 (Weekday)
+			<span class="rounded-2xl  w-fit">
+				RM100 (Weekday)
 			</span>
-			<span class="rounded-2xl bg-white px-3 py-1 text-black w-fit">
-				RM125 (Weekend) per night
+			<span class="rounded-2xl  w-fit">
+				RM120 (Weekend) per night
 			</span>
 		</p>
 		<p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -305,7 +307,7 @@
 		<div class="my-2 text-sm text-gray-600 dark:text-gray-400">
 			<label>
 				<input type="checkbox" required />
-				I agree to the <a href="/terms" class="underline">Terms & Conditions</a> and <a href="/privacy" class="underline">Privacy Policy</a>.
+				I agree to the <a href="/terms" target="_blank" class="underline">Terms & Conditions</a> and <a href="/privacy" target="_blank" class="underline">Privacy Policy</a>.
 			</label>
 		</div>
 
